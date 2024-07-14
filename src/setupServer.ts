@@ -10,10 +10,10 @@ import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import 'express-async-errors';
-import { config } from './config';
+import { config } from '@root/config';
 import Logger from 'bunyan';
-import applicationRoutes from './routes';
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
+import applicationRoutes from '@root/routes';
+import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('setupServer');
@@ -117,5 +117,7 @@ export class MyServer {
     });
   }
 
-  private socketIOConnections(io: Server): void {}
+  private socketIOConnections(io: Server): void {
+
+  }
 }
