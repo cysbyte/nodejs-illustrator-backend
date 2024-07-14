@@ -11,10 +11,12 @@ import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
 import "express-async-errors";
 import { config } from './config'
+import Logger from "bunyan";
 import applicationRoutes from './routes'
 import { CustomError, IErrorResponse } from "./shared/globals/helpers/error-handler";
 
 const SERVER_PORT = 5000;
+const log: Logger = config.createLogger('setupServer');
 
 export class MyServer {
   private app: Application;
@@ -70,7 +72,7 @@ export class MyServer {
     });
 
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
-      //log.error(error);
+      log.error(error);
       if (error instanceof CustomError) {
         return res.status(error.statusCode).json(error.serializeErrors());
       }
@@ -81,16 +83,13 @@ export class MyServer {
   
   private async startServer(app: Application): Promise<void> {
     try {
-      console.log('Starting server...')
       const myConfig = config;
       const httpServer: http.Server = new http.Server(app);
       const socketIO: Server = await this.createSocketIO(httpServer);
-      console.log('created Socket IO')
       this.startHttpServer(httpServer);
-      console.log('starting Http Server...')
       this.socketIOConnections(socketIO);
     } catch (error) {
-      // log.error(error);
+      log.error(error);
     }
   }
 
@@ -116,9 +115,9 @@ export class MyServer {
   }
 
   private startHttpServer(httpServer: http.Server): void {
-    console.log(`Server has started with process ${process.pid}`)
+    log.info(`Server has started with process ${process.pid}`)
     httpServer.listen(SERVER_PORT, () => {
-      console.log(`Server running on port ${SERVER_PORT}`);
+      log.info(`Server running on port ${SERVER_PORT}`);
     });
   }
 
