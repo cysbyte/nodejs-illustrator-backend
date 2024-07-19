@@ -5,6 +5,7 @@ import { IAuthJob } from '@auth/interfaces/auth.interface';
 import { IEmailJob, IUserJob } from '@user/interfaces/user.interface';
 import { ExpressAdapter, createBullBoard, BullAdapter } from '@bull-board/express';
 
+type IBaseJobData = | IAuthJob
 
 let bullAdapters: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;
@@ -40,7 +41,7 @@ export abstract class BaseQueue {
     });
   }
 
-  protected addJob(name: string, data: any): void {
+  protected addJob(name: string, data: IBaseJobData): void {
     this.queue.add(name, data, { attempts: 3, backoff: { type: 'fixed', delay: 5000 } });
   }
 
