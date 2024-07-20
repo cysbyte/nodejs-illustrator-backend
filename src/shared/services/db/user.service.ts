@@ -1,10 +1,9 @@
 import { IAuthDocument } from "@auth/interfaces/auth.interface";
-import { AuthModel } from "@auth/models/auth.schema";
-import { Helpers } from "@global/helpers/helpers";
+import { UserModel } from "@user/models/user.schema";
 
 class UserService {
   public async addUserData(data: IAuthDocument): Promise<void> {
-    await AuthModel.create(data);
+    await UserModel.create(data);
   }
 
 }
