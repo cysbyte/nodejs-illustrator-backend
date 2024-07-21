@@ -41,18 +41,17 @@ export class SignUp{
       avatarColor
     });
 
-    const result: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
-    if (!result?.public_id) {
-      throw new BadRequestError('File upload: Error occurred. Try again.');
-    }
+    // const result: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
+    // if (!result?.public_id) {
+    //   throw new BadRequestError('File upload: Error occurred. Try again.');
+    // }
 
     // Add to redis cache.
     const userDataForCache: IUserDocument = SignUp.prototype.userData(authData, userObjectId);
-    userDataForCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
+    userDataForCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${"result.version"}/${userObjectId}`;
     await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
 
-    omit(userDataForCache, ['uId', 'username', 'email', 'avataColor', 'password']);
-    authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
+    authQueue.addAuthUserJob('addAuthUserToDB', { value: authData });
     userQueue.addUserJob('addUserToDB', { value: userDataForCache });
 
     const userJwt: string = SignUp.prototype.signToken(authData, userObjectId);
