@@ -13,7 +13,6 @@ class Application {
   }
 
   private async loadConfig(): Promise<void> {
-    const a = await Promise.resolve(4)
     config.validateConfig();
     config.cloudinaryConfig();
   }

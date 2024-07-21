@@ -1,7 +1,7 @@
-import { IAuthDocument } from "@auth/interfaces/auth.interface";
-import { IUserDocument } from "@user/interfaces/user.interface";
-import { UserModel } from "@user/models/user.schema";
-import mongoose from "mongoose";
+import { IAuthDocument } from '@auth/interfaces/auth.interface';
+import { IUserDocument } from '@user/interfaces/user.interface';
+import { UserModel } from '@user/models/user.schema';
+import mongoose from 'mongoose';
 
 class UserService {
   public async addUserData(data: IAuthDocument): Promise<void> {

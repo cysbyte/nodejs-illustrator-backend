@@ -9,7 +9,7 @@ class UserWorker {
   async addUserToDB(job: Job, done: DoneCallback): Promise<void> {
     try {
       const { value } = job.data;
-      await userService.addUserData(value)
+      await userService.addUserData(value);
       job.progress(100);
       done(null, job.data);
     } catch (error) {

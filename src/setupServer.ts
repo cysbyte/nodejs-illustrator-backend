@@ -1,4 +1,4 @@
-import { Application, json, urlencoded, request, NextFunction, Request, Response } from 'express';
+import { Application, json, urlencoded, NextFunction, Request, Response } from 'express';
 import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -82,18 +82,14 @@ export class MyServer {
 
   private async startServer(app: Application): Promise<void> {
     try {
-      const myConfig = config;
       const httpServer: http.Server = new http.Server(app);
-      const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
-      this.socketIOConnections(socketIO);
     } catch (error) {
       log.error(error);
     }
   }
 
   private async createSocketIO(httpServer: http.Server): Promise<Server> {
-    const myConfig = config;
     const io: Server = new Server(httpServer, {
       cors: {
         origin: config.CLIENT_URL,
@@ -115,9 +111,5 @@ export class MyServer {
     httpServer.listen(SERVER_PORT, () => {
       log.info(`Server running on port ${SERVER_PORT}`);
     });
-  }
-
-  private socketIOConnections(io: Server): void {
-
   }
 }
