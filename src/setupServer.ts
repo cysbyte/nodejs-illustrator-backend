@@ -14,6 +14,7 @@ import { config } from '@root/config';
 import Logger from 'bunyan';
 import applicationRoutes from '@root/routes';
 import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
+import { SocketIOPostHandler } from '@socket/post';
 
 const SERVER_PORT = 6000;
 const log: Logger = config.createLogger('setupServer');
@@ -84,6 +85,8 @@ export class MyServer {
     try {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
+      const socketIO: Server = await this.createSocketIO(httpServer);
+      this.socketIOConnections(socketIO);
     } catch (error) {
       log.error(error);
     }
@@ -112,4 +115,11 @@ export class MyServer {
       log.info(`Server running on port ${SERVER_PORT}`);
     });
   }
+
+  private socketIOConnections(io: Server): void {
+    const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
+
+    postSocketHandler.listen();
+  }
+
 }
