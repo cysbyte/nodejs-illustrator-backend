@@ -1,7 +1,7 @@
 import { authRoutes } from '@auth/routes/authRoutes';
 import { currentUserRoutes } from '@auth/routes/currentRoutes';
-import { postRoutes } from '@auth/routes/postRoutes';
 import { authMiddleware } from '@global/helpers/auth-middleware';
+import { postRoutes } from '@post/routes/postRoutes';
 import { serverAdapter } from '@service/queues/base.queue';
 import { Application } from 'express';
 
